@@ -1,0 +1,103 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  SUPER_ADMIN
+  OWNER
+  TENANT
+}
+
+enum BookingStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}
+
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  password  String
+  name      String
+  role      Role      @default(TENANT)
+  phone     String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  // Relations
+  kosts     Kost[]    // If owner
+  bookings  Booking[] // If tenant
+  payments  Payment[] // If tenant
+}
+
+model Kost {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  address     String
+  city        String
+  latitude    Float?
+  longitude   Float?
+  rules       String[]
+  facilities  String[]
+  ownerId     String
+  owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  rooms       Room[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Room {
+  id          String    @id @default(uuid())
+  kostId      String
+  kost        Kost      @relation(fields: [kostId], references: [id], onDelete: Cascade)
+  roomNumber  String
+  price       Float
+  isAvailable Boolean   @default(true)
+  facilities  String[]
+  bookings    Booking[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Booking {
+  id        String        @id @default(uuid())
+  tenantId  String
+  tenant    User          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  roomId    String
+  room      Room          @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  startDate DateTime
+  endDate   DateTime?
+  status    BookingStatus @default(PENDING)
+  payments  Payment[]
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+model Payment {
+  id            String        @id @default(uuid())
+  bookingId     String
+  booking       Booking       @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  tenantId      String
+  tenant        User          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  amount        Float
+  status        PaymentStatus @default(PENDING)
+  paymentMethod String?
+  snapToken     String?       // Untuk integrasi Midtrans
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}

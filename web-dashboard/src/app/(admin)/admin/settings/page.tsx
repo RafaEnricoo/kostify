@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { 
-  Sliders, 
   ShieldAlert, 
   Database, 
   Save, 
@@ -10,7 +9,9 @@ import {
   ToggleRight,
   DatabaseBackup,
   Percent,
-  CheckCircle2
+  CheckCircle2,
+  User,
+  Upload
 } from 'lucide-react';
 import { useTheme } from '../../../../context/ThemeContext';
 
@@ -19,10 +20,17 @@ export default function AdminSettingsPage() {
   const isDark = theme === 'dark';
   const transClass = hasLoadedTheme ? 'transition-all duration-350' : '';
 
-  const [activeTab, setActiveTab] = useState('commission');
+  const [activeTab, setActiveTab] = useState('profile');
   const [successMsg, setSuccessMsg] = useState('');
 
   // Form states
+  const [profileForm, setProfileForm] = useState({
+    name: 'Jane Doe',
+    email: 'janedoe@kostify.com',
+    phone: '0812-9999-8888',
+    department: 'Super Administrator',
+  });
+
   const [commissionForm, setCommissionForm] = useState({
     feePercent: 10,
     minPayout: 50000,
@@ -37,11 +45,12 @@ export default function AdminSettingsPage() {
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
-    setSuccessMsg('Konfigurasi sistem berhasil diperbarui!');
+    setSuccessMsg('Konfigurasi sistem & profil admin berhasil diperbarui!');
     setTimeout(() => setSuccessMsg(''), 3000);
   };
 
   const tabs = [
+    { id: 'profile', name: 'Profil Admin', icon: User },
     { id: 'commission', name: 'Biaya & Komisi', icon: Percent },
     { id: 'maintenance', name: 'Pemeliharaan Sistem', icon: ShieldAlert },
     { id: 'database', name: 'Database & Cadangan', icon: Database },
@@ -93,6 +102,73 @@ export default function AdminSettingsPage() {
       }`}>
         <form onSubmit={handleSave} className="space-y-6">
           
+          {/* 0. PROFILE TAB */}
+          {activeTab === 'profile' && (
+            <div className="space-y-5">
+              {/* Profile Avatar Edit Mock */}
+              <div className="flex items-center gap-4 py-2">
+                <div className="w-16 h-16 rounded-full bg-orange-600 flex items-center justify-center text-white font-bold text-xl shadow-md">
+                  SA
+                </div>
+                <div>
+                  <button type="button" className="flex items-center gap-1.5 px-3.5 py-2 border rounded-xl text-xs font-bold hover:bg-neutral-500/10 transition-colors">
+                    <Upload className="w-3.5 h-3.5" />
+                    <span>Unggah Foto</span>
+                  </button>
+                  <p className="text-[10px] text-neutral-500 mt-1.5">Mendukung format JPG atau PNG, Maksimal 2MB.</p>
+                </div>
+              </div>
+
+              {/* Form Input fields */}
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 gap-2">
+                  <label className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Nama Admin</label>
+                  <input 
+                    type="text" 
+                    value={profileForm.name}
+                    onChange={(e) => setProfileForm({ ...profileForm, name: e.target.value })}
+                    className={`px-4 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-orange-500/20 ${
+                      isDark ? 'bg-neutral-900 border-neutral-800 text-white' : 'bg-neutral-50 border-neutral-200'
+                    }`}
+                  />
+                </div>
+                <div className="grid grid-cols-1 gap-2">
+                  <label className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Alamat Email Resmi</label>
+                  <input 
+                    type="email" 
+                    value={profileForm.email}
+                    onChange={(e) => setProfileForm({ ...profileForm, email: e.target.value })}
+                    className={`px-4 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-orange-500/20 ${
+                      isDark ? 'bg-neutral-900 border-neutral-800 text-white' : 'bg-neutral-50 border-neutral-200'
+                    }`}
+                  />
+                </div>
+                <div className="grid grid-cols-1 gap-2">
+                  <label className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Nomor Handphone</label>
+                  <input 
+                    type="text" 
+                    value={profileForm.phone}
+                    onChange={(e) => setProfileForm({ ...profileForm, phone: e.target.value })}
+                    className={`px-4 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-2 focus:ring-orange-500/20 ${
+                      isDark ? 'bg-neutral-900 border-neutral-800 text-white' : 'bg-neutral-50 border-neutral-200'
+                    }`}
+                  />
+                </div>
+                <div className="grid grid-cols-1 gap-2">
+                  <label className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Departemen / Jabatan</label>
+                  <input 
+                    type="text" 
+                    value={profileForm.department}
+                    disabled
+                    className={`px-4 py-2.5 rounded-xl text-xs border opacity-60 cursor-not-allowed ${
+                      isDark ? 'bg-neutral-900 border-neutral-800 text-white' : 'bg-neutral-50 border-neutral-200'
+                    }`}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* 1. COMMISSION & FEES TAB */}
           {activeTab === 'commission' && (
             <div className="space-y-5">

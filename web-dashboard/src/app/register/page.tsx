@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Mail, Lock, User, Phone, Home, AlertCircle, Loader2, UserPlus, CheckCircle } from 'lucide-react';
+import { AlertCircle, Loader2, CheckCircle } from 'lucide-react';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -31,7 +31,7 @@ export default function RegisterPage() {
           email,
           phone,
           password,
-          role: 'OWNER', // Di-set default OWNER karena mendaftar via Web Dashboard
+          role: 'OWNER',
         }),
       });
 
@@ -53,141 +53,133 @@ export default function RegisterPage() {
   };
 
   return (
-    <main className="min-h-screen bg-slate-950 flex flex-col justify-center items-center relative overflow-hidden p-4">
-      {/* Background Gradients */}
-      <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-violet-600/10 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-600/10 blur-[120px] pointer-events-none" />
+    <div className="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-50 dark:bg-gray-950 transition-colors duration-500 p-4">
+      
+      {/* CARD REGISTER */}
+      <div className="w-full sm:max-w-md mt-6 px-8 py-10 bg-white dark:bg-gray-900 border border-gray-200/60 dark:border-gray-800/80 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] rounded-3xl backdrop-blur-sm">
+          
+          {success ? (
+            <div className="text-center py-6">
+              <div className="flex justify-center mb-4">
+                <CheckCircle className="w-16 h-16 text-emerald-500 animate-bounce" />
+              </div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Pendaftaran Sukses!</h1>
+              <p className="text-gray-500 dark:text-gray-400 text-sm">Akun Owner Anda berhasil dibuat. Mengalihkan ke halaman masuk...</p>
+            </div>
+          ) : (
+            <>
+              {/* LOGO & JUDUL */}
+              <div className="flex flex-col items-center mb-8">
+                  <div className="h-14 w-14 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/20 mb-4">
+                      {/* Icon Rumah/Kost (Solid Vector) */}
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" viewBox="0 0 20 20" fill="currentColor">
+                          <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                      </svg>
+                  </div>
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Daftar Akun Owner</h2>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Mulai pasang kost dan kelola penyewa Anda</p>
+              </div>
 
-      {/* Brand Header */}
-      <div className="flex items-center gap-2 mb-6 z-10">
-        <div className="p-2 bg-gradient-to-tr from-violet-600 to-indigo-600 rounded-xl shadow-lg shadow-violet-500/20">
-          <Home className="w-6 h-6 text-white" />
-        </div>
-        <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-violet-400 to-indigo-400">
-          Kostify
-        </span>
+              {error && (
+                <div className="bg-red-500/10 border border-red-500/20 p-3 rounded-xl flex items-start gap-2.5 mb-5">
+                  <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+                  <span className="text-red-400 text-xs font-medium leading-relaxed">{error}</span>
+                </div>
+              )}
+
+              <form onSubmit={handleSubmit} className="space-y-5">
+                  {/* Nama Lengkap */}
+                  <div>
+                      <label htmlFor="name" className="block text-gray-700 dark:text-gray-300 font-medium text-sm">
+                        Nama Lengkap
+                      </label>
+                      <input 
+                        id="name" 
+                        type="text"
+                        required
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="Nama lengkap Anda"
+                        className="block mt-1 w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-800/50 dark:text-gray-100 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 text-sm" 
+                      />
+                  </div>
+
+                  {/* Email Address */}
+                  <div>
+                      <label htmlFor="email" className="block text-gray-700 dark:text-gray-300 font-medium text-sm">
+                        Email Properti
+                      </label>
+                      <input 
+                        id="email" 
+                        type="email"
+                        required
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="nama@email.com"
+                        className="block mt-1 w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-800/50 dark:text-gray-100 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 text-sm" 
+                      />
+                  </div>
+
+                  {/* WhatsApp Phone */}
+                  <div>
+                      <label htmlFor="phone" className="block text-gray-700 dark:text-gray-300 font-medium text-sm">
+                        Nomor Handphone (WhatsApp)
+                      </label>
+                      <input 
+                        id="phone" 
+                        type="tel"
+                        required
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        placeholder="0812xxxxxxxx"
+                        className="block mt-1 w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-800/50 dark:text-gray-100 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 text-sm" 
+                      />
+                  </div>
+
+                  {/* Password */}
+                  <div>
+                      <label htmlFor="password" className="block text-gray-700 dark:text-gray-300 font-medium text-sm">
+                        Password
+                      </label>
+                      <input 
+                        id="password" 
+                        type="password"
+                        required
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Minimal 6 karakter"
+                        className="block mt-1 w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-800/50 dark:text-gray-100 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 text-sm"
+                      />
+                  </div>
+
+                  {/* Action Button */}
+                  <div className="pt-2">
+                      <button 
+                        type="submit" 
+                        disabled={loading}
+                        className="w-full inline-flex items-center justify-center px-4 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 border border-transparent rounded-xl font-semibold text-sm text-white uppercase tracking-wider shadow-md shadow-blue-500/10 hover:shadow-lg hover:shadow-blue-500/20 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950 transition-all duration-200"
+                      >
+                          {loading ? (
+                            <Loader2 className="w-5 h-5 animate-spin" />
+                          ) : (
+                            'Daftarkan Sekarang'
+                          )}
+                      </button>
+                  </div>
+              </form>
+
+              <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-800 text-center">
+                <p className="text-gray-600 dark:text-gray-400 text-xs">
+                  Sudah memiliki akun?{' '}
+                  <Link href="/login" className="text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 font-semibold transition-colors">
+                    Masuk di sini
+                  </Link>
+                </p>
+              </div>
+            </>
+          )}
+
       </div>
-
-      {/* Glassmorphic Card */}
-      <div className="w-full max-w-md bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 p-8 rounded-2xl shadow-2xl z-10 transition-all duration-300 hover:border-slate-700/50">
-        {success ? (
-          <div className="text-center py-6">
-            <div className="flex justify-center mb-4">
-              <CheckCircle className="w-16 h-16 text-emerald-500 animate-bounce" />
-            </div>
-            <h1 className="text-2xl font-bold text-white mb-2">Pendaftaran Sukses!</h1>
-            <p className="text-slate-400 text-sm">Akun Owner Anda berhasil dibuat. Mengalihkan ke halaman masuk...</p>
-          </div>
-        ) : (
-          <>
-            <div className="text-center mb-6">
-              <h1 className="text-2xl font-bold text-white mb-1">Daftar Akun Owner</h1>
-              <p className="text-slate-400 text-sm">Mulai pasang kost dan kelola penyewa Anda</p>
-            </div>
-
-            {error && (
-              <div className="bg-red-500/10 border border-red-500/20 p-3 rounded-lg flex items-start gap-2.5 mb-5">
-                <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
-                <span className="text-red-400 text-xs font-medium leading-relaxed">{error}</span>
-              </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
-                  Nama Lengkap
-                </label>
-                <div className="relative">
-                  <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
-                  <input
-                    type="text"
-                    required
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Nama lengkap Anda"
-                    className="w-full pl-11 pr-4 py-3 bg-slate-950 border border-slate-800/80 rounded-xl text-white placeholder-slate-600 focus:outline-none focus:border-violet-500/80 focus:ring-2 focus:ring-violet-500/20 transition-all text-sm"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
-                  Email Properti
-                </label>
-                <div className="relative">
-                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
-                  <input
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="nama@email.com"
-                    className="w-full pl-11 pr-4 py-3 bg-slate-950 border border-slate-800/80 rounded-xl text-white placeholder-slate-600 focus:outline-none focus:border-violet-500/80 focus:ring-2 focus:ring-violet-500/20 transition-all text-sm"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
-                  Nomor Handphone (WhatsApp)
-                </label>
-                <div className="relative">
-                  <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
-                  <input
-                    type="tel"
-                    required
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    placeholder="0812xxxxxxxx"
-                    className="w-full pl-11 pr-4 py-3 bg-slate-950 border border-slate-800/80 rounded-xl text-white placeholder-slate-600 focus:outline-none focus:border-violet-500/80 focus:ring-2 focus:ring-violet-500/20 transition-all text-sm"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
-                  Password
-                </label>
-                <div className="relative">
-                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
-                  <input
-                    type="password"
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Minimal 6 karakter"
-                    className="w-full pl-11 pr-4 py-3 bg-slate-950 border border-slate-800/80 rounded-xl text-white placeholder-slate-600 focus:outline-none focus:border-violet-500/80 focus:ring-2 focus:ring-violet-500/20 transition-all text-sm"
-                  />
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full py-3 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 disabled:from-violet-800 disabled:to-indigo-800 text-white font-medium rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-violet-500/10 transition-all duration-200 mt-2 text-sm"
-              >
-                {loading ? (
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                ) : (
-                  <>
-                    <UserPlus className="w-5 h-5" />
-                    <span>Daftarkan Sekarang</span>
-                  </>
-                )}
-              </button>
-            </form>
-
-            <div className="mt-6 pt-6 border-t border-slate-800/60 text-center">
-              <p className="text-slate-400 text-xs">
-                Sudah memiliki akun?{' '}
-                <Link href="/login" className="text-violet-400 hover:text-violet-300 font-semibold transition-colors">
-                  Masuk di sini
-                </Link>
-              </p>
-            </div>
-          </>
-        )}
-      </div>
-    </main>
+    </div>
   );
 }

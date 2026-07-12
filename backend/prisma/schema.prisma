@@ -15,6 +15,11 @@ enum Role {
   TENANT
 }
 
+enum Gender {
+  LAKI_LAKI
+  PEREMPUAN
+}
+
 enum BookingStatus {
   PENDING
   APPROVED
@@ -28,23 +33,49 @@ enum PaymentStatus {
 }
 
 model User {
-  id        String    @id @default(uuid())
-  email     String    @unique
-  password  String
-  name      String
-  role      Role      @default(TENANT)
-  phone     String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-
+  id            String         @id @default(uuid())
+  email         String         @unique
+  password      String
+  name          String
+  role          Role           @default(TENANT)
+  phone         String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  
   // Relations
-  kosts     Kost[]    // If owner
-  bookings  Booking[] // If tenant
-  payments  Payment[] // If tenant
+  tenantProfile TenantProfile?
+  ownerProfile  OwnerProfile?
+  bookings      Booking[]      // If tenant
+  payments      Payment[]      // If tenant
+}
+
+model TenantProfile {
+  id             String   @id @default(uuid())
+  userId         String   @unique
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  gender         Gender
+  ktpNumber      String?
+  occupation     String?  // Pekerjaan/Mahasiswa
+  emergencyPhone String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model OwnerProfile {
+  id            String   @id @default(uuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bankName      String?
+  bankAccount   String?
+  bankOwnerName String?
+  isVerified    Boolean  @default(false)
+  kosts         Kost[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model Kost {
-  id          String   @id @default(uuid())
+  id          String       @id @default(uuid())
   name        String
   description String?
   address     String
@@ -54,10 +85,10 @@ model Kost {
   rules       String[]
   facilities  String[]
   ownerId     String
-  owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  owner       OwnerProfile @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   rooms       Room[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 }
 
 model Room {

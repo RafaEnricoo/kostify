@@ -65,8 +65,14 @@ export default function Sidebar({
             <span className="text-xl font-bold tracking-tight">
               Kost<span className="text-orange-500">ify</span>
             </span>
-            <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider ${
-              isDark ? 'bg-orange-500/10 text-orange-400' : 'bg-orange-50 text-orange-600'
+            <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider border ${
+              isOwner
+                ? isDark 
+                  ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' 
+                  : 'bg-blue-50 text-blue-600 border-blue-200'
+                : isDark 
+                  ? 'bg-orange-500/10 text-orange-400 border-orange-500/20' 
+                  : 'bg-orange-50 text-orange-600 border-orange-200'
             }`}>
               {role}
             </span>

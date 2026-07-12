@@ -91,12 +91,13 @@ export default function HomePage() {
           
           {/* Brand Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="relative">
-              <div className="absolute -inset-1 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 opacity-20 blur group-hover:opacity-40 transition-opacity duration-300" />
-              <div className={`w-9 h-9 rounded-xl flex items-center justify-center font-black text-white bg-orange-600 relative z-10 shadow-md shadow-orange-600/10`}>
-                K
-              </div>
-            </div>
+            <img 
+              src={isDark ? "/images/logo_white.png" : "/images/logo.png"} 
+              alt="Kostify Logo" 
+              className={`w-9 h-9 rounded-xl object-contain p-1 border transition-all duration-300 ${
+                isDark ? 'border-neutral-850 bg-neutral-900/60' : 'border-neutral-200 bg-white shadow-sm'
+              }`}
+            />
             <span className="text-lg font-black tracking-tight">
               Kost<span className="text-orange-500">ify.</span>
             </span>
@@ -553,9 +554,11 @@ export default function HomePage() {
       }`}>
         <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-3">
-            <div className="w-7 h-7 rounded-lg flex items-center justify-center font-black text-white bg-orange-600 text-xs">
-              K
-            </div>
+            <img 
+              src={isDark ? "/images/logo_white.png" : "/images/logo.png"} 
+              alt="Kostify Logo" 
+              className="w-7 h-7 object-contain"
+            />
             <span className="text-sm font-black tracking-tight">
               Kost<span className="text-orange-500">ify.</span>
               <span className="text-[10px] font-medium text-neutral-500 ml-2">© 2026. Hak Cipta Dilindungi.</span>

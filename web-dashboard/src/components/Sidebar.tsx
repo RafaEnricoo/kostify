@@ -206,9 +206,9 @@ export default function Sidebar({
 
       {/* POPUP LOGOUT CONFIRMATION MODAL */}
       {showLogoutConfirm && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-backdrop-fade">
           <div 
-            className={`w-full max-w-sm rounded-2xl border p-8 text-center animate-in fade-in zoom-in-95 duration-200 shadow-2xl ${
+            className={`w-full max-w-sm rounded-2xl border p-8 text-center animate-modal-spring shadow-2xl ${
               isDark 
                 ? 'bg-neutral-950 border-neutral-900 text-white' 
                 : 'bg-white border-neutral-200 text-neutral-900'
